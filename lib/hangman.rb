@@ -58,16 +58,21 @@ class Hangman
     guess = sanitize_guess(guess)
     if guess.nil?
       @display.invalid_guess
+      return false
+    elsif @guessed_letters.join('').include?(guess)
+      @display.duplicate_guess
+      return false
     elsif guess.length == 1
       # TO DO!!! Write logic for handling a guess
       @guessed_letters.push(guess)
       update_display_array()
       if @word.join('').include?(guess)
         @display.correct_guess
+        return false
       else
         @display.incorrect_guess
       end
-      @display.display_word(@display_array)
+      return true
     end
   end
 
@@ -75,6 +80,21 @@ class Hangman
   def show_word
     #puts @word.join('')
     puts @display_array.join(' ')
+  end
+
+  def new_game(turns)
+    turns_left = turns
+    while turns_left.positive?
+      if @display_array.index('_').nil?
+        @display.win_text
+        break
+      end
+      @display.display_word(@display_array)
+      @display.display_turns(turns_left)
+      if guess_letter
+        turns_left -= 1
+      end
+    end
   end
 end
 
@@ -85,7 +105,4 @@ game = Hangman.new
 #Game loop
 game.pick_random_word()
 game.update_display_array()
-game.show_word
-5.times do 
-  game.guess_letter
-end
+game.new_game(10)

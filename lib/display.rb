@@ -5,6 +5,7 @@ class Display
   end
 
   def display_word(word_array)
+    puts ''
     puts word_array.join(' ')
   end
 
@@ -17,6 +18,7 @@ class Display
   end
 
   def prompt_guess(guessed_letters)
+    puts ''
     puts 'Guess a letter in the word, you can also type save to save the game or exit to exit.'
     puts "You have already guessed these letters: #{guessed_letters.join(", ")}"
     gets.chomp
@@ -32,6 +34,14 @@ class Display
 
   def incorrect_guess
     puts 'The guessed letter is not in the word!'
+  end
+
+  def duplicate_guess
+    puts 'Letter already guessed, try again!'
+  end
+
+  def display_turns(turns)
+    puts "Guesses left:#{turns}"
   end
 
   def save_text
