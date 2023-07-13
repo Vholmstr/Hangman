@@ -31,7 +31,17 @@ class Hangman
     end
   end
 
+  def update_display_array
+    #Compares the guessed letters to the word and updates the display array accordingly
+    @word.each_with_index do |letter, i|
+      if @guessed_letters.include?(letter)
+        @display_array[i] = letter.upcase
+      end
+    end
+  end
+
   def sanitize_guess(string)
+    # check if the string is only one letter and in the alphabet or save or exit
     if string.downcase == 'exit'
       string.downcase
     elsif string.downcase == 'save'
@@ -43,19 +53,27 @@ class Hangman
     end
   end
 
-  def guess_letter(guess)
+  def guess_letter
+    guess = @display.prompt_guess(@guessed_letters)
     guess = sanitize_guess(guess)
-    p guess
     if guess.nil?
-      puts 'Faulty guess!'
-    else
-      puts 'Success!!'
+      @display.invalid_guess
+    elsif guess.length == 1
+      # TO DO!!! Write logic for handling a guess
+      @guessed_letters.push(guess)
+      update_display_array()
+      if @word.join('').include?(guess)
+        @display.correct_guess
+      else
+        @display.incorrect_guess
+      end
+      @display.display_word(@display_array)
     end
   end
 
   # Only for testing purposes!!!!!!!!!!!!!!!!!!!
   def show_word
-    puts @word.join('')
+    #puts @word.join('')
     puts @display_array.join(' ')
   end
 end
@@ -66,8 +84,8 @@ game = Hangman.new
 
 #Game loop
 game.pick_random_word()
-game.show_word()
-game.guess_letter('W')
-game.guess_letter('EXIT')
-game.guess_letter('save')
-game.guess_letter("-")
+game.update_display_array()
+game.show_word
+5.times do 
+  game.guess_letter
+end
