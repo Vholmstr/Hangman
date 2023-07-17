@@ -90,7 +90,7 @@ class Hangman
     puts @display_array.join(' ')
   end
 
-  def new_game(turns)
+  def new_game(turns = @turns_left)
     @turns_left = turns
     while @turns_left.positive?
       if @display_array.index('_').nil?
@@ -126,14 +126,14 @@ class Hangman
     # Create object containing the word, guessed letters and amount of guesses left
     save_object = {
       name: name,
-      word: @word.join(''),
+      word: @word,
       guessed_letters: @guessed_letters,
-      guesses_left: @turns_left
+      turns_left: @turns_left
     }
     # Parse object to JSON
-    serialized = JSON::dump(save_object)
+    serialized = JSON.dump(save_object)
     # Open the save file (create it if it doesn't exist)
-    file = File.open('save.json', 'w')
+    file = File.open('save.json', 'a')
     # Write parsed object to the save file
     file.puts serialized
     file.close
@@ -141,12 +141,30 @@ class Hangman
 
   def load_game()
     # Ask for a name for the load file
-    name = @display.load_game_prompt
+    save_name = @display.load_game_prompt
     # Open the save file if it exists
+    file = File.open('save.json', 'r')
     # Search for the save object
-    # Save object if found
-    # Parse JSON
-    # Update word, guessed letters and guesses left
+    saved_game = nil
+    until file.eof?
+      # Parse JSON
+      object = JSON.parse(file.readline)
+      if object['name'] == save_name
+        # Save object if found
+        saved_game = object
+      end
+    end
+    file.close
+
+    if saved_game.nil?
+      puts "Saved game named: '#{name}' could not be found."
+    else
+      # Update word, guessed letters and guesses left
+      @word = saved_game['word']
+      @guessed_letters = saved_game['guessed_letters']
+      @turns_left = saved_game['turns_left']
+      update_display_array
+    end
     # Continue game
   end
 end
@@ -158,4 +176,5 @@ game = Hangman.new
 #Game loop
 game.pick_random_word()
 game.update_display_array()
-game.new_game(10)
+game.load_game
+game.new_game
