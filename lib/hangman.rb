@@ -85,6 +85,7 @@ class Hangman
     turns_left = turns
     while turns_left.positive?
       if @display_array.index('_').nil?
+        @display.display_word(@display_array)
         @display.win_text
         break
       end
