@@ -5,35 +5,42 @@ class Display
   end
 
   def display_word(word_array)
-    puts ''
     puts word_array.join(' ')
+    puts ''
   end
 
-  def game_over_text
-    puts 'Game over, better luck next time!'
+  def game_over_text(word)
+    puts ''
+    puts "Game over, the correct word was: #{word}."
+    puts 'Better luck next time!'
   end
 
   def win_text
     puts 'Congratulations, you win!'
   end
 
-  def prompt_guess(guessed_letters)
+  def prompt_guess()
     puts ''
     puts 'Guess a letter in the word, you can also type save to save the game or exit to exit.'
+    guess = gets.chomp
+    puts ''
+    guess
+  end
+
+  def display_guessed_letters(guessed_letters)
     puts "You have already guessed these letters: #{guessed_letters.join(", ")}"
-    gets.chomp
   end
 
   def invalid_guess
-    puts 'Invalid input, guess must be a letter between a-z. Try again!'
+    puts 'Invalid guess, guess must be a letter between a-z. Try again!'
   end
 
   def correct_guess
-    puts 'The guessed letter is in the word!'
+    puts 'Good guess!'
   end
 
   def incorrect_guess
-    puts 'The guessed letter is not in the word!'
+    puts 'No luck!'
   end
 
   def duplicate_guess

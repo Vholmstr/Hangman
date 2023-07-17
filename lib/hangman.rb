@@ -1,7 +1,6 @@
 require_relative 'display'
 
 class Hangman
-
   def initialize (word = nil, guessed_letters = [])
     @word = word
     @display_array = []
@@ -17,7 +16,7 @@ class Hangman
 
     # Picks a random number and uses it to select a word from the array
     random_number = rand(0..words.length-1)
-    @word = words[random_number].split("")
+    @word = words[random_number].split('')
     reset_display_array()
   end
 
@@ -54,7 +53,7 @@ class Hangman
   end
 
   def guess_letter
-    guess = @display.prompt_guess(@guessed_letters)
+    guess = @display.prompt_guess()
     guess = sanitize_guess(guess)
     if guess.nil?
       @display.invalid_guess
@@ -89,10 +88,14 @@ class Hangman
         @display.win_text
         break
       end
-      @display.display_word(@display_array)
+      @display.display_guessed_letters(@guessed_letters)
       @display.display_turns(turns_left)
+      @display.display_word(@display_array)
       if guess_letter
         turns_left -= 1
+        if turns_left == 0
+          @display.game_over_text(@word.join(''))
+        end
       end
     end
   end
