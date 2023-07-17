@@ -58,5 +58,13 @@ class Display
   def exit_text
     puts 'Exiting game, thank you for playing!'
   end
+
+  def create_save_prompt
+    prompt('Choose a name for your save')
+  end
+
+  def load_game_prompt
+    prompt('Write the name of your saved game')
+  end
 end
 
