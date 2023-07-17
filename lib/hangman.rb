@@ -57,10 +57,14 @@ class Hangman
     guess = sanitize_guess(guess)
     if guess.nil?
       @display.invalid_guess
-      return false
+      return nil
+    elsif guess == 'exit'
+      return 'exit'
+    elsif guess == 'save'
+      return 'save'
     elsif @guessed_letters.join('').include?(guess)
       @display.duplicate_guess
-      return false
+      return nil
     elsif guess.length == 1
       # TO DO!!! Write logic for handling a guess
       @guessed_letters.push(guess)
@@ -71,13 +75,13 @@ class Hangman
       else
         @display.incorrect_guess
       end
-      return true
+      return 'guess'
     end
   end
 
   # Only for testing purposes!!!!!!!!!!!!!!!!!!!
   def show_word
-    #puts @word.join('')
+    # puts @word.join('')
     puts @display_array.join(' ')
   end
 
@@ -92,11 +96,20 @@ class Hangman
       @display.display_guessed_letters(@guessed_letters)
       @display.display_turns(turns_left)
       @display.display_word(@display_array)
-      if guess_letter
+      case guess_letter()
+      when 'guess'
         turns_left -= 1
-        if turns_left == 0
+        if turns_left.zero?
           @display.game_over_text(@word.join(''))
         end
+      when 'save'
+        # save game
+        @display.save_text
+        turns_left = 0
+      when 'exit'
+        # Exits game
+        @display.exit_text
+        turns_left = 0
       end
     end
   end

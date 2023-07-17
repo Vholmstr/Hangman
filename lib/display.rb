@@ -56,7 +56,7 @@ class Display
   end
 
   def exit_text
-    puts 'Exiting game'
+    puts 'Exiting game, thank you for playing!'
   end
 end
 
