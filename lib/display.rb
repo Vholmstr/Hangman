@@ -5,7 +5,7 @@ class Display
   end
 
   def display_word(word_array)
-    puts word_array.join(' ')
+    puts "\033[1;44m#{word_array.join(' ')}\033[0m"
     puts ''
   end
 
@@ -23,7 +23,9 @@ class Display
     puts ''
     puts 'Guess a letter in the word, you can also type save to save the game or exit to exit.'
     guess = gets.chomp
-    puts ''
+    20.times do
+      puts ''
+    end
     guess
   end
 
@@ -36,11 +38,11 @@ class Display
   end
 
   def correct_guess
-    puts 'Good guess!'
+    puts "\033[32mGood guess!\033[0m"
   end
 
   def incorrect_guess
-    puts 'No luck!'
+    puts "\033[31mUnlucky!\033[0m"
   end
 
   def duplicate_guess
@@ -52,7 +54,7 @@ class Display
   end
 
   def save_text
-    puts 'Saving game'
+    puts "\033[32mSaving game!\033[0m"
   end
 
   def exit_text
