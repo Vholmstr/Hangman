@@ -2,10 +2,10 @@ require 'json'
 require_relative 'display'
 
 class Hangman
-  def initialize (word = pick_random_word, guessed_letters = [], turns_left = 10)
-    @word = word
+  def initialize (turns_left = 10)
+    @word = nil
     @display_array = []
-    @guessed_letters = guessed_letters
+    @guessed_letters = []
     @display = Display.new
     @turns_left = turns_left
   end
@@ -90,7 +90,7 @@ class Hangman
     puts @display_array.join(' ')
   end
 
-  def new_game(turns = @turns_left)
+  def play_game(turns = @turns_left)
     @turns_left = turns
     while @turns_left.positive?
       if @display_array.index('_').nil?
@@ -168,13 +168,3 @@ class Hangman
     # Continue game
   end
 end
-
-puts 'Hangman initialized!'
-
-game = Hangman.new
-
-#Game loop
-game.pick_random_word()
-game.update_display_array()
-game.load_game
-game.new_game
